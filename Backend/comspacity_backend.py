@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 class Text(BaseModel):
-    name: str
+    texts: str
 
 app = FastAPI()
 
@@ -11,9 +11,9 @@ app = FastAPI()
 def read_root():
     return {"pong"}
 
-@app.post("/items/")
+@app.post("/complexity/")
 async def create_item(txt: Text):
-    text = txt.name
+    text = txt.texts
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(text)
 
