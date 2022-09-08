@@ -11,10 +11,14 @@ app = FastAPI()
 def read_root():
     return {"pong"}
 
-@app.post("/complexity/")
-async def create_item(txt: Text):
+@app.post("/complexity/{language}")
+async def create_item(txt: Text, language: str):
     text = txt.texts
-    nlp = spacy.load("en_core_web_sm")
+    if language == "english":
+        nlp = spacy.load("en_core_web_sm")
+    elif language == "german":
+        nlp = spacy.load("de_core_news_sm")
+    doc = nlp(text)
     doc = nlp(text)
 
     sentences = 0
