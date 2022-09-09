@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  Frontend:
+    container_name: frontend_container
+    build: ./frontend
+    restart: always
+    volumes:
+      - ./frontend:/code
+    ports:
+      - 10101:10101
+    depends_on:
+      - backend
+  backend:
+    container_name: backend
+    build: ./backend
+    restart: always
+    volumes:
+      - ./backend:/code
+    ports:
+      - 8000:8000
+
