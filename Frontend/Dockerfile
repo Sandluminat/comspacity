@@ -9,6 +9,6 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./comspacity_frontend.py /code/
 
-EXPOSE 10101
+EXPOSE 8501
 
-CMD ["streamlit", "run", "comspacity_frontend.py"]
+CMD ["streamlit", "run", "comspacity_frontend.py", "--server.port=8501", "--server.address=0.0.0.0"]

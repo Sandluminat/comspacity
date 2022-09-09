@@ -1,4 +1,4 @@
-version: "3.10"
+version: "3.8"
 services:
   frontend:
     container_name: comspacity_frontend_container
@@ -7,7 +7,7 @@ services:
     volumes:
       - ./frontend:/code
     ports:
-      - 10101:10101
+      - 8501:8501
     depends_on:
       - backend
   backend:
