@@ -11,4 +11,4 @@ COPY ./comspacity_backend.py /code/
 
 EXPOSE 8000
 
-CMD ["uvicorn", "comspacity_backend:app", "--reload"]
+CMD ["uvicorn", "comspacity_backend:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
