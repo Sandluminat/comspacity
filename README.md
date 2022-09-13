@@ -1,7 +1,7 @@
 # comspacity
 Using Spacy to return the complexity of a document.
 ## Installation
-Open a terminal and copy or clone the repository. Move into the directory comspacity with cd comspacity. It is required that docker and docker compose are installed and running in your machine in advance. Run docker-compose up as a command in your terminal. Open a web browser and go to either http://127.0.0.1:8501 or http://localhost:8501.
+Open a terminal and copy or clone the repository. Move into the directory comspacity with `cd comspacity`. It is required that docker and docker compose are installed and running in your machine in advance. Run `docker-compose up` as a command in your terminal. Open a web browser and go to either `http://127.0.0.1:8501` or `http://localhost:8501`.
 ## Usage
 1. Choose a language
 2. Choose if you want the complexity-score of the whole document or if you want the complexity-score of each sentence.
