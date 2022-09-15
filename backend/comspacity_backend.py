@@ -11,10 +11,11 @@ input_variab = config.Input_variables()
 
 # create BaseModel
 class Text(BaseModel):
-    texts: str = Field(alias=input_variab.content,extra=Extra.allow)
+    texts: str = Field(alias=input_variab.content)
 
     class Config:
         allow_population_by_field_name = True
+        extra=Extra.allow
 
 app = FastAPI()
 
