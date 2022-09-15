@@ -70,7 +70,7 @@ async def create_item(txt: Text, language: str):
     doc = set_language(language, text)
 
     words, words_length, verbes, hard_words = reset_variables()
-    sentences = 0
+    sentences = 1
 
     with open('sample.json', 'r') as openfile:
         json_object = json.load(openfile)
@@ -81,6 +81,10 @@ async def create_item(txt: Text, language: str):
 
             if spacy.explain(token.tag_) == "punctuation mark, sentence closer" or spacy.explain(token.tag_) == "sentence-final punctuation mark":
                 sentences += 1
+    
+    # Can't put it in get_complexity function because the same function is used with complexity of sentences which doesn't use sentences.
+    if sentences > 1:
+        sentences-=1
     
     verbes_per_sentence = verbes/sentences
     words_per_sentence = words/sentences
