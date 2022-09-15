@@ -2,7 +2,7 @@ import spacy
 import json
 import config
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, Extra
 
 # Load configs
 e_weights = config.English()
@@ -11,7 +11,7 @@ input_variab = config.Input_variables()
 
 # create BaseModel
 class Text(BaseModel):
-    texts: str = Field(alias=input_variab.content)
+    texts: str = Field(alias=input_variab.content,extra=Extra.allow)
 
     class Config:
         allow_population_by_field_name = True
