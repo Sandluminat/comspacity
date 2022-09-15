@@ -12,6 +12,7 @@ input_variab = config.Input_variables()
 # create BaseModel
 class Text(BaseModel):
     texts: str = Field(alias=input_variab.content)
+    complexityscore: float = Field(default=0.0)
 
     class Config:
         allow_population_by_field_name = True
@@ -67,7 +68,7 @@ def read_root():
 @app.post("/complexity/document/{language}")
 async def create_item(txt: Text, language: str):
     text = txt.texts
-
+    print(txt.dict)
     doc = set_language(language, text)
 
     words, words_length, verbes, hard_words = reset_variables()
@@ -91,13 +92,10 @@ async def create_item(txt: Text, language: str):
     words_per_sentence = words/sentences
 
     complexity_of_text = get_complexity(language, words, words_length, hard_words, words_per_sentence, verbes_per_sentence)  
-    
-    output = {
-        "content": txt.texts,
-        "complexityscore": complexity_of_text,
-        }
 
-    return output
+    txt.complexityscore=complexity_of_text
+
+    return txt
 
 @app.post("/complexity/sentences/{language}")
 async def create_item(txt: Text, language: str):
