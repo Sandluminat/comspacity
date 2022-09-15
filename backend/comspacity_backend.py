@@ -41,7 +41,7 @@ def get_complexity(lang, words, words_length, hard_words, words_per_sentence, ve
     if lang == "english":
         complexity_of_text = words_per_sentence*e_weights.sentence_length + verbes_per_sentence*e_weights.average_verbes + average_word_length*e_weights.word_length + average_hard_words*e_weights.average_hard_words 
     elif lang == "german":
-        complexity_of_text = words_per_sentence*g_weights.sentence_length + verbes_per_sentence*g_weights.average_verbes + average_word_length/g_weights.word_length
+        complexity_of_text = words_per_sentence*g_weights.sentence_length + verbes_per_sentence*g_weights.average_verbes + average_word_length*g_weights.word_length
     return complexity_of_text
 
 def counting(token, json_object, words, words_length, verbes, hard_words):
@@ -88,7 +88,7 @@ async def create_item(txt: Text, language: str):
     complexity_of_text = get_complexity(language, words, words_length, hard_words, words_per_sentence, verbes_per_sentence)  
     
     output = {
-        "content": doc.text,
+        "content": txt.texts,
         "complexityscore": complexity_of_text,
         }
 

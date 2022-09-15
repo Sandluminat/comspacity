@@ -3,7 +3,7 @@ import requests
 
 endpoint = 'http://backend:8000/complexity/'
 
-st.title("Comspacity")
+st.title("comspacity")
 
 language = st.selectbox("Choose your language", ("english", "german"))
 type_of_complexity = st.selectbox("Do you want to know the complexity of a document or do you want to list the complexity of each phrase.", ("document", "sentences"))
