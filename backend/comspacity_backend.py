@@ -37,13 +37,19 @@ def reset_variables():
     return words, words_length, verbes, hard_words
 
 def get_complexity(lang, words, words_length, hard_words, words_per_sentence, verbes_per_sentence):
+    
     average_word_length = words_length/words
     average_hard_words = hard_words/words
+    if hard_words == 0:
+        average_hard_words = 1
 
     if lang == "english":
-        complexity_of_text = words_per_sentence*e_weights.sentence_length + verbes_per_sentence*e_weights.average_verbes + average_word_length*e_weights.word_length + average_hard_words*e_weights.average_hard_words 
+        complexity_of_text = words_per_sentence*e_weights.sentence_length + verbes_per_sentence*e_weights.average_verbes + average_word_length*e_weights.word_length - average_hard_words*e_weights.average_hard_words 
     elif lang == "german":
         complexity_of_text = words_per_sentence*g_weights.sentence_length + verbes_per_sentence*g_weights.average_verbes + average_word_length*g_weights.word_length
+    
+    if complexity_of_text < 0:
+        complexity_of_text = 0
     return complexity_of_text
 
 def counting(token, json_object, words, words_length, verbes, hard_words):
@@ -53,8 +59,8 @@ def counting(token, json_object, words, words_length, verbes, hard_words):
 
         if token.pos_ == "VERB":
             verbes += 1
-        
-        if token.text in json_object:
+
+        if token.lower_ in json_object:
             pass
         else:
             hard_words += 1
@@ -68,7 +74,6 @@ def read_root():
 @app.post("/complexity/document/{language}")
 async def create_item(txt: Text, language: str):
     text = txt.texts
-    print(txt.dict)
     doc = set_language(language, text)
 
     words, words_length, verbes, hard_words = reset_variables()

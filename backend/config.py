@@ -9,7 +9,7 @@ class English():
     word_length = os.environ.get("word_length", 12)
     sentence_length = os.environ.get("sentence_length", 2)
     average_verbes = os.environ.get("average_verbes", 7)
-    average_hard_words = os.environ.get("average_hard_words", 100)
+    average_hard_words = os.environ.get("average_hard_words", 10)
 
 class German():
     word_length = os.environ.get("word_length", 11)
