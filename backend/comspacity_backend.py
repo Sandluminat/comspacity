@@ -9,6 +9,11 @@ e_weights = config.English()
 g_weights = config.German()
 input_variab = config.Input_variables()
 
+nlp_english = spacy.load("en_core_web_sm")
+nlp_german = spacy.load("de_core_news_sm")
+
+
+
 # create BaseModel
 class Text(BaseModel):
     texts: str = Field(alias=input_variab.content)
@@ -31,9 +36,9 @@ app = FastAPI()
 # Definitions
 def set_language(lang, text):
     if lang == "english":
-        nlp = spacy.load("en_core_web_sm")
+        nlp = nlp_english
     elif lang == "german":
-        nlp = spacy.load("de_core_news_sm")
+        nlp = nlp_german
     doc = nlp(text)
     return doc
 
@@ -84,22 +89,22 @@ def read_root():
 
 @app.post("/complexity/document/{language}")
 async def create_item(txt: Text, language: str):
+
     text = txt.texts
     doc = set_language(language, text)
-
     words, words_length, verbes, hard_words = reset_variables()
     sentences = 1
 
     with open('sample.json', 'r') as openfile:
         json_object = json.load(openfile)
-    
+
     for line in doc.sents:
         for token in line:
             words, words_length, verbes, hard_words = counting(token, json_object, words, words_length, verbes, hard_words)
 
             if spacy.explain(token.tag_) == "punctuation mark, sentence closer" or spacy.explain(token.tag_) == "sentence-final punctuation mark":
                 sentences += 1
-    
+
     # Can't put it in get_complexity function because the same function is used with complexity of sentences which doesn't use sentences.
     if sentences > 1:
         sentences-=1
@@ -139,3 +144,5 @@ async def create_item(txt: Text_sentences, language: str):
     txt.sentence_complexity = complexity_json
 
     return txt
+
+# on startup load nlp
