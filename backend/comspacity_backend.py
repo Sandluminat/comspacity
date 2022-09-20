@@ -37,9 +37,12 @@ def reset_variables():
     return words, words_length, verbes, hard_words
 
 def get_complexity(lang, words, words_length, hard_words, words_per_sentence, verbes_per_sentence):
-    
-    average_word_length = words_length/words
-    average_hard_words = hard_words/words
+    try:    
+        average_word_length = words_length/words
+        average_hard_words = hard_words/words
+    except:
+        average_word_length = 0
+        average_hard_words = 0
     if hard_words == 0:
         average_hard_words = 1
 
