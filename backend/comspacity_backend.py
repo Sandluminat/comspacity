@@ -18,6 +18,14 @@ class Text(BaseModel):
         allow_population_by_field_name = True
         extra=Extra.allow
 
+class Text_sentences(BaseModel):
+    texts: str = Field(alias=input_variab.content)
+    sentence_complexity: dict
+
+    class Config:
+        allow_population_by_field_name = True
+        extra=Extra.allow
+
 app = FastAPI()
 
 # Definitions
@@ -44,10 +52,10 @@ def get_complexity(lang, words, words_length, hard_words, words_per_sentence, ve
         average_word_length = 0
         average_hard_words = 0
     if hard_words == 0:
-        average_hard_words = 1
+        average_hard_words = 0
 
     if lang == "english":
-        complexity_of_text = words_per_sentence*e_weights.sentence_length + verbes_per_sentence*e_weights.average_verbes + average_word_length*e_weights.word_length - average_hard_words*e_weights.average_hard_words 
+        complexity_of_text = words_per_sentence*e_weights.sentence_length + verbes_per_sentence*e_weights.average_verbes + average_word_length*e_weights.word_length + average_hard_words*e_weights.average_hard_words 
     elif lang == "german":
         complexity_of_text = words_per_sentence*g_weights.sentence_length + verbes_per_sentence*g_weights.average_verbes + average_word_length*g_weights.word_length
     
@@ -106,7 +114,7 @@ async def create_item(txt: Text, language: str):
     return txt
 
 @app.post("/complexity/sentences/{language}")
-async def create_item(txt: Text, language: str):
+async def create_item(txt: Text_sentences, language: str):
     text = txt.texts
 
     doc = set_language(language, text)
@@ -128,5 +136,6 @@ async def create_item(txt: Text, language: str):
 
     sentences_list.sort(key = lambda x: -x[1])
     complexity_json = {sentences_list[i][0]: sentences_list[i][1] for i in range(len(sentences_list))}
+    txt.sentence_complexity = complexity_json
 
-    return complexity_json
+    return txt
