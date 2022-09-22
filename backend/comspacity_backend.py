@@ -25,7 +25,7 @@ class Text(BaseModel):
 
 class Text_sentences(BaseModel):
     texts: str = Field(alias=input_variab.content)
-    sentence_complexity: dict
+    sentence_complexity: dict = Field(default={"no": "sentences"})
 
     class Config:
         allow_population_by_field_name = True
