@@ -1,6 +1,10 @@
 from pydantic import BaseSettings
 import os
 
+# Set language: "" means all languages
+class Language():
+    lang = ""
+
 # pydantic: Input variable
 class Input_variables():
     content = os.environ.get("content", "content")

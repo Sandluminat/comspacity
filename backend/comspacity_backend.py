@@ -9,9 +9,14 @@ e_weights = config.English()
 g_weights = config.German()
 input_variab = config.Input_variables()
 
-nlp_english = spacy.load("en_core_web_sm")
-nlp_german = spacy.load("de_core_news_sm")
-
+lang = config.Language.lang
+if lang == "":
+    nlp_english = spacy.load("en_core_web_sm")
+    nlp_german = spacy.load("de_core_news_sm")
+elif lang == "english":
+    nlp_english = spacy.load("en_core_web_sm")
+elif lang == "german":
+    nlp_german = spacy.load("de_core_news_sm")
 
 
 # create BaseModel
@@ -139,10 +144,8 @@ async def create_item(txt: Text_sentences, language: str):
                 complexity_of_sentence = get_complexity(language, words, words_length, hard_words, words, verbes)  
                 sentences_list.append([sentence, complexity_of_sentence])
 
-    sentences_list.sort(key = lambda x: -x[1])
+    # sentences_list.sort(key = lambda x: -x[1]) # If you want a sorted sentence list.
     complexity_json = {sentences_list[i][0]: sentences_list[i][1] for i in range(len(sentences_list))}
     txt.sentence_complexity = complexity_json
 
     return txt
-
-# on startup load nlp
