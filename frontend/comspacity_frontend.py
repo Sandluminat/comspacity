@@ -19,7 +19,7 @@ else:
         out = output.json()
         sentences = out["sentence_complexity"]
         for i in sentences:
-            if sentences[i] >= 90:
+            if sentences[i] >= 250:
                 x = (f"**{i}** ")
                 highlight_content += x
             else:
