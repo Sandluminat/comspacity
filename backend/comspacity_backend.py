@@ -98,7 +98,7 @@ async def create_item(txt: Text, language: str):
     text = txt.texts
     doc = set_language(language, text)
     words, words_length, verbes, hard_words = reset_variables()
-    sentences = 1
+    sentences = 0
 
     with open('sample.json', 'r') as openfile:
         json_object = json.load(openfile)
@@ -107,15 +107,14 @@ async def create_item(txt: Text, language: str):
         for token in line:
             words, words_length, verbes, hard_words = counting(token, json_object, words, words_length, verbes, hard_words)
 
-            if spacy.explain(token.tag_) == "punctuation mark, sentence closer" or spacy.explain(token.tag_) == "sentence-final punctuation mark":
-                sentences += 1
+        sentences += 1
 
-    # Can't put it in get_complexity function because the same function is used with complexity of sentences which doesn't use sentences.
-    if sentences > 1:
-        sentences-=1
-    
-    verbes_per_sentence = verbes/sentences
-    words_per_sentence = words/sentences
+    try:
+        verbes_per_sentence = verbes/sentences
+        words_per_sentence = words/sentences
+    except:
+        verbes_per_sentence = 0
+        words_per_sentence = 0
 
     complexity_of_text = get_complexity(language, words, words_length, hard_words, words_per_sentence, verbes_per_sentence)  
 
@@ -140,9 +139,8 @@ async def create_item(txt: Text_sentences, language: str):
         for token in line:
             words, words_length, verbes, hard_words = counting(token, json_object, words, words_length, verbes, hard_words)
                     
-            if spacy.explain(token.tag_) == "punctuation mark, sentence closer" or spacy.explain(token.tag_) == "sentence-final punctuation mark":
-                complexity_of_sentence = get_complexity(language, words, words_length, hard_words, words, verbes)  
-                sentences_list.append([sentence, complexity_of_sentence])
+        complexity_of_sentence = get_complexity(language, words, words_length, hard_words, words, verbes)  
+        sentences_list.append([sentence, complexity_of_sentence])
 
     # sentences_list.sort(key = lambda x: -x[1]) # If you want a sorted sentence list.
     complexity_json = {sentences_list[i][0]: sentences_list[i][1] for i in range(len(sentences_list))}
