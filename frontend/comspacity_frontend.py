@@ -21,11 +21,13 @@ else:
     if type_of_complexity == "sentences":
         out = output.json()
         sentences = out["sentence_complexity"]
-        
+
         for i in sentences:
             sorted_sentences.append([i, sentences[i]])
         sorted_sentences.sort(key = lambda x: -x[1])
-        y = int(len(sorted_sentences)*0.1) # Only the top 20% in the sense of complexity will be displayed
+        y = int(len(sorted_sentences)*0.4) # Only the top 20% in the sense of complexity will be displayed
+        if y == 0:
+            y+=1
         sorted_sentences = sorted_sentences[0:y]
         for i in sorted_sentences:
             new_list.append(i[0])
